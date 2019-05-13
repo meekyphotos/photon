@@ -11,23 +11,23 @@ import org.elasticsearch.index.query.QueryBuilder;
  */
 public class BaseElasticsearchSearcher implements ElasticsearchSearcher {
 
-    private Client client;
+  private final Client client;
 
-    public BaseElasticsearchSearcher(Client client) {
-        this.client = client;
-    }
+  public BaseElasticsearchSearcher(final Client client) {
+    this.client = client;
+  }
 
-    @Override
-    public SearchResponse search(QueryBuilder queryBuilder, Integer limit) {
-        TimeValue timeout = TimeValue.timeValueSeconds(7);
-        return client.prepareSearch("photon").
-                setSearchType(SearchType.QUERY_AND_FETCH).
-                setQuery(queryBuilder).
-                setSize(limit).
-                setTimeout(timeout).
-                execute().
-                actionGet();
+  @Override
+  public SearchResponse search(final QueryBuilder queryBuilder, final Integer limit) {
+    final TimeValue timeout = TimeValue.timeValueSeconds(7);
+    return client.prepareSearch("photon").
+        setSearchType(SearchType.DEFAULT).
+        setQuery(queryBuilder).
+        setSize(limit).
+        setTimeout(timeout).
+        execute().
+        actionGet();
 
-    }
+  }
 
 }

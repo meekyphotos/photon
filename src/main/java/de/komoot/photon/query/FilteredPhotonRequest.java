@@ -12,72 +12,73 @@ import java.util.Set;
  * Created by Sachin Dole on 2/12/2015.
  */
 public class FilteredPhotonRequest extends PhotonRequest {
-    private Set<String> excludeKeys = new HashSet<String>(3);
-    private Set<String> includeKeys = new HashSet<String>(3);
-    private Set<String> excludeValues = new HashSet<String>(3);
-    private Set<String> includeValues = new HashSet<String>();
-    private Map<String, Set<String>> includeTags = new HashMap<String, Set<String>>(3);
-    private Map<String, Set<String>> excludeTags = new HashMap<String, Set<String>>(3);
-    private Map<String, Set<String>> excludeTagValues = new HashMap<String, Set<String>>(3);
 
-    FilteredPhotonRequest(String query, int limit, Point locationForBias, double locBiasScale, String language) {
-        super(query, limit, locationForBias, locBiasScale, language);
-    }
+  private final Set<String> excludeKeys = new HashSet<String>(3);
+  private final Set<String> includeKeys = new HashSet<String>(3);
+  private final Set<String> excludeValues = new HashSet<String>(3);
+  private final Set<String> includeValues = new HashSet<String>();
+  private final Map<String, Set<String>> includeTags = new HashMap<String, Set<String>>(3);
+  private final Map<String, Set<String>> excludeTags = new HashMap<String, Set<String>>(3);
+  private final Map<String, Set<String>> excludeTagValues = new HashMap<String, Set<String>>(3);
 
-    public Set<String> keys() {
-        return includeKeys;
-    }
+  FilteredPhotonRequest(final String query, final int limit, final Point locationForBias, final double locBiasScale, final String language) {
+    super(query, limit, locationForBias, locBiasScale, language);
+  }
 
-    void keys(String includeKey) {
-        this.includeKeys.add(includeKey);
-    }
+  public Set<String> keys() {
+    return includeKeys;
+  }
 
-    public Set<String> values() {
-        return includeValues;
-    }
+  void keys(final String includeKey) {
+    this.includeKeys.add(includeKey);
+  }
 
-    void values(String keyToInclude) {
-        includeValues.add(keyToInclude);
-    }
+  public Set<String> values() {
+    return includeValues;
+  }
 
-    public Map<String, Set<String>> tags() {
-        return includeTags;
-    }
+  void values(final String keyToInclude) {
+    includeValues.add(keyToInclude);
+  }
 
-    void tags(String aKey, Set<String> manyValues) {
-        this.includeTags.put(aKey, manyValues);
-    }
+  public Map<String, Set<String>> tags() {
+    return includeTags;
+  }
 
-    public Set<String> notValues() {
-        return excludeValues;
-    }
+  void tags(final String aKey, final Set<String> manyValues) {
+    this.includeTags.put(aKey, manyValues);
+  }
 
-    public Map<String, Set<String>> notTags() {
-        return excludeTags;
-    }
+  public Set<String> notValues() {
+    return excludeValues;
+  }
 
-    void notKeys(String excludeKey) {
-        excludeKeys.add(excludeKey);
-    }
+  public Map<String, Set<String>> notTags() {
+    return excludeTags;
+  }
 
-    void notTags(String excludeKey, Set<String> excludeManyValues) {
-        excludeTags.put(excludeKey, excludeManyValues);
-    }
+  void notKeys(final String excludeKey) {
+    excludeKeys.add(excludeKey);
+  }
 
-    void notValues(String excludeValue) {
-        excludeValues.add(excludeValue);
-    }
+  void notTags(final String excludeKey, final Set<String> excludeManyValues) {
+    excludeTags.put(excludeKey, excludeManyValues);
+  }
 
-    public Set<String> notKeys() {
-        return excludeKeys;
-    }
+  void notValues(final String excludeValue) {
+    excludeValues.add(excludeValue);
+  }
 
-    void tagNotValues(String key, Set<String> excludeValues) {
-        excludeTagValues.put(key, excludeValues);
-    }
+  public Set<String> notKeys() {
+    return excludeKeys;
+  }
 
-    public Map<String, Set<String>> tagNotValues() {
-        return excludeTagValues;
+  void tagNotValues(final String key, final Set<String> excludeValues) {
+    excludeTagValues.put(key, excludeValues);
+  }
 
-    }
+  public Map<String, Set<String>> tagNotValues() {
+    return excludeTagValues;
+
+  }
 }

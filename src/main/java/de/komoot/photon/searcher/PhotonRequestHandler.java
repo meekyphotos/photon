@@ -1,6 +1,7 @@
 package de.komoot.photon.searcher;
 
 import de.komoot.photon.query.PhotonRequest;
+
 import org.json.JSONObject;
 
 import java.util.List;
@@ -12,5 +13,6 @@ import java.util.List;
  * Created by Sachin Dole on 2/12/2015.
  */
 public interface PhotonRequestHandler<R extends PhotonRequest> {
-    List<JSONObject> handle(R photonRequest);
+
+  List<JSONObject> handle(R photonRequest);
 }

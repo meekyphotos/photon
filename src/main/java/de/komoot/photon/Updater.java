@@ -4,13 +4,14 @@ package de.komoot.photon;
  * @author felix
  */
 public interface Updater {
-    public void create(PhotonDoc doc);
 
-    public void update(PhotonDoc doc);
+  void create(PhotonDoc doc);
 
-    public void delete(Long id);
+  void update(PhotonDoc doc);
 
-    public void finish();
+  void delete(Long id);
 
-    public void updateOrCreate(PhotonDoc updatedDoc);
+  void finish();
+
+  void updateOrCreate(PhotonDoc updatedDoc);
 }

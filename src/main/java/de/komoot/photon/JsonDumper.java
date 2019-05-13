@@ -1,10 +1,12 @@
 package de.komoot.photon;
 
-import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.common.Strings;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * useful to create json files that can be used for fast re imports
@@ -13,28 +15,29 @@ import java.io.PrintWriter;
  */
 @Slf4j
 public class JsonDumper implements Importer {
-    private PrintWriter writer = null;
-    private final String[] languages;
 
-    public JsonDumper(String filename, String languages) throws FileNotFoundException {
-        this.writer = new PrintWriter(filename);
-        this.languages = languages.split(",");
-    }
+  private final String[] languages;
+  private PrintWriter writer;
 
-    @Override
-    public void add(PhotonDoc doc) {
-        try {
-            writer.println("{\"index\": {}}");
-            writer.println(Utils.convert(doc, this.languages).string());
-        } catch (IOException e) {
-            log.error("error writing json file", e);
-        }
-    }
+  public JsonDumper(final String filename, final String languages) throws FileNotFoundException {
+    this.writer = new PrintWriter(filename);
+    this.languages = languages.split(",");
+  }
 
-    @Override
-    public void finish() {
-        if (writer != null) {
-            writer.close();
-        }
+  @Override
+  public void add(final PhotonDoc doc) {
+    try {
+      writer.println("{\"index\": {}}");
+      writer.println(Strings.toString(Utils.convert(doc, this.languages)));
+    } catch (final IOException e) {
+      log.error("error writing json file", e);
     }
+  }
+
+  @Override
+  public void finish() {
+    if (writer != null) {
+      writer.close();
+    }
+  }
 }

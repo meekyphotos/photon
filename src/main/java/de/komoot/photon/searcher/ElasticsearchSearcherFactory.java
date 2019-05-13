@@ -2,6 +2,7 @@ package de.komoot.photon.searcher;
 
 import de.komoot.photon.query.FilteredPhotonRequest;
 import de.komoot.photon.query.PhotonRequest;
+
 import org.elasticsearch.client.Client;
 
 /**
@@ -11,17 +12,19 @@ import org.elasticsearch.client.Client;
  */
 public class ElasticsearchSearcherFactory {
 
-    private final Client client;
+  private final Client client;
 
-    public ElasticsearchSearcherFactory(Client client) {
-        this.client = client;
+  public ElasticsearchSearcherFactory(final Client client) {
+    this.client = client;
+  }
+
+  public ElasticsearchSearcher getSearcher(final PhotonRequest photonRequest) {
+    if (photonRequest instanceof FilteredPhotonRequest) {
+      return new BaseElasticsearchSearcher(client);
+    } else {
+      return null;
     }
 
-    public ElasticsearchSearcher getSearcher(PhotonRequest photonRequest) {
-        if (photonRequest instanceof FilteredPhotonRequest) {
-            return new BaseElasticsearchSearcher(client);
-        } else return null;
-
-    }
+  }
 
 }

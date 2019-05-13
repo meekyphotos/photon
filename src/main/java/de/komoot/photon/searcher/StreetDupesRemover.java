@@ -2,9 +2,11 @@ package de.komoot.photon.searcher;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import de.komoot.photon.Constants;
 import de.komoot.photon.Utils;
 import de.komoot.photon.utils.Command;
+
 import org.json.JSONObject;
 
 import java.util.HashSet;
@@ -18,44 +20,45 @@ import java.util.List;
  * Created by Sachin Dole on 2/20/2015.
  */
 public class StreetDupesRemover implements Command<List<JSONObject>, List<JSONObject>> {
-    private final String language;
 
-    public StreetDupesRemover(String language) {
-        this.language = language;
-    }
+  private final String language;
 
-    @Override
-    public List<JSONObject> execute(List<JSONObject>... allResults) {
-        List<JSONObject> results = allResults[0];
-        List<JSONObject> filteredItems = Lists.newArrayListWithCapacity(results.size());
-        final HashSet<String> keys = Sets.newHashSet();
-        for (JSONObject result : results) {
-            final JSONObject properties = result.getJSONObject(Constants.PROPERTIES);
-            if (properties.has(Constants.OSM_KEY) && "highway".equals(properties.getString(Constants.OSM_KEY))) {
-                // result is a street
-                if (properties.has(Constants.POSTCODE) && properties.has(Constants.NAME)) {
-                    // street has a postcode and name
-                    String postcode = properties.getString(Constants.POSTCODE);
-                    String name = properties.getString(Constants.NAME);
-                    // OSM_VALUE is part of key to avoid deduplication of e.g. bus_stops and streets with same name 
-                    String key = (properties.has(Constants.OSM_VALUE) ? properties.getString(Constants.OSM_VALUE) : "") + ":";
+  public StreetDupesRemover(final String language) {
+    this.language = language;
+  }
 
-                    if (language.equals("nl")) {
-                        String onlyDigitsPostcode = Utils.stripNonDigits(postcode);
-                        key += onlyDigitsPostcode + ":" + name;
-                    } else {
-                        key += postcode + ":" + name;
-                    }
+  @Override
+  public List<JSONObject> execute(final List<JSONObject>... allResults) {
+    final List<JSONObject> results = allResults[0];
+    final List<JSONObject> filteredItems = Lists.newArrayListWithCapacity(results.size());
+    final HashSet<String> keys = Sets.newHashSet();
+    for (final JSONObject result : results) {
+      final JSONObject properties = result.getJSONObject(Constants.PROPERTIES);
+      if (properties.has(Constants.OSM_KEY) && "highway".equals(properties.getString(Constants.OSM_KEY))) {
+        // result is a street
+        if (properties.has(Constants.POSTCODE) && properties.has(Constants.NAME)) {
+          // street has a postcode and name
+          final String postcode = properties.getString(Constants.POSTCODE);
+          final String name = properties.getString(Constants.NAME);
+          // OSM_VALUE is part of key to avoid deduplication of e.g. bus_stops and streets with same name
+          String key = (properties.has(Constants.OSM_VALUE) ? properties.getString(Constants.OSM_VALUE) : "") + ":";
 
-                    if (keys.contains(key)) {
-                        // an osm highway object (e.g. street or bus_stop) with this osm_value + name + postcode is already part of the result list
-                        continue;
-                    }
-                    keys.add(key);
-                }
-            }
-            filteredItems.add(result);
+          if (language.equals("nl")) {
+            final String onlyDigitsPostcode = Utils.stripNonDigits(postcode);
+            key += onlyDigitsPostcode + ":" + name;
+          } else {
+            key += postcode + ":" + name;
+          }
+
+          if (keys.contains(key)) {
+            // an osm highway object (e.g. street or bus_stop) with this osm_value + name + postcode is already part of the result list
+            continue;
+          }
+          keys.add(key);
         }
-        return filteredItems;
+      }
+      filteredItems.add(result);
     }
+    return filteredItems;
+  }
 }

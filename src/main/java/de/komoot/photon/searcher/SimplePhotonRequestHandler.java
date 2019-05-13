@@ -7,14 +7,15 @@ import de.komoot.photon.query.TagFilterQueryBuilder;
 /**
  * Created by Sachin Dole on 2/12/2015.
  */
-public class SimplePhotonRequestHandler extends AbstractPhotonRequestHandler<PhotonRequest> implements PhotonRequestHandler<PhotonRequest> {
-    public SimplePhotonRequestHandler(ElasticsearchSearcher elasticsearchSearcher) {
-        super(elasticsearchSearcher);
-    }
+public class SimplePhotonRequestHandler extends AbstractPhotonRequestHandler<PhotonRequest> {
 
-    @Override
-    public TagFilterQueryBuilder buildQuery(PhotonRequest photonRequest) {
-        return PhotonQueryBuilder.builder(photonRequest.getQuery(), photonRequest.getLanguage()).
-                withLocationBias(photonRequest.getLocationForBias(), photonRequest.getScaleForBias());
-    }
+  public SimplePhotonRequestHandler(final ElasticsearchSearcher elasticsearchSearcher) {
+    super(elasticsearchSearcher);
+  }
+
+  @Override
+  public TagFilterQueryBuilder buildQuery(final PhotonRequest photonRequest) {
+    return PhotonQueryBuilder.builder(photonRequest.getQuery(), photonRequest.getLanguage()).
+        withLocationBias(photonRequest.getLocationForBias(), photonRequest.getScaleForBias());
+  }
 }

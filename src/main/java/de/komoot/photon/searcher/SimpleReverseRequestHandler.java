@@ -7,13 +7,14 @@ import de.komoot.photon.query.TagFilterQueryBuilder;
 /**
  * @author svantulden
  */
-public class SimpleReverseRequestHandler extends AbstractReverseRequestHandler<ReverseRequest> implements ReverseRequestHandler<ReverseRequest> {
-    public SimpleReverseRequestHandler(ElasticsearchReverseSearcher elasticsearchSearcher) {
-        super(elasticsearchSearcher);
-    }
+public class SimpleReverseRequestHandler extends AbstractReverseRequestHandler<ReverseRequest> {
 
-    @Override
-    public TagFilterQueryBuilder buildQuery(ReverseRequest photonRequest) {
-        return ReverseQueryBuilder.builder(photonRequest.getLocation(), photonRequest.getRadius(), photonRequest.getQueryStringFilter());
-    }
+  public SimpleReverseRequestHandler(final ElasticsearchReverseSearcher elasticsearchSearcher) {
+    super(elasticsearchSearcher);
+  }
+
+  @Override
+  public TagFilterQueryBuilder buildQuery(final ReverseRequest photonRequest) {
+    return ReverseQueryBuilder.builder(photonRequest.getLocation(), photonRequest.getRadius(), photonRequest.getQueryStringFilter());
+  }
 }

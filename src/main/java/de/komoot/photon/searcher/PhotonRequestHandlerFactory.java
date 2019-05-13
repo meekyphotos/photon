@@ -8,23 +8,23 @@ import de.komoot.photon.query.PhotonRequest;
  */
 public class PhotonRequestHandlerFactory {
 
-    private final ElasticsearchSearcher elasticsearchSearcher;
+  private final ElasticsearchSearcher elasticsearchSearcher;
 
-    public PhotonRequestHandlerFactory(ElasticsearchSearcher elasticsearchSearcher) {
-        this.elasticsearchSearcher = elasticsearchSearcher;
+  public PhotonRequestHandlerFactory(final ElasticsearchSearcher elasticsearchSearcher) {
+    this.elasticsearchSearcher = elasticsearchSearcher;
+  }
+
+  /**
+   * Given a {@link PhotonRequest} create a
+   * {@link PhotonRequestHandler handler} that can execute the elastic search
+   * search.
+   */
+  public <R extends PhotonRequest> PhotonRequestHandler<R> createHandler(final R request) {
+    if (request instanceof FilteredPhotonRequest) {
+      return (PhotonRequestHandler<R>) new FilteredPhotonRequestHandler(elasticsearchSearcher);
+    } else {
+      return (PhotonRequestHandler<R>) new SimplePhotonRequestHandler(elasticsearchSearcher);
     }
 
-    /**
-     * Given a {@link PhotonRequest} create a
-     * {@link PhotonRequestHandler handler} that can execute the elastic search
-     * search.
-     */
-    public <R extends PhotonRequest> PhotonRequestHandler<R> createHandler(R request) {
-        if (request instanceof FilteredPhotonRequest) {
-            return (PhotonRequestHandler<R>) new FilteredPhotonRequestHandler(elasticsearchSearcher);
-        } else {
-            return (PhotonRequestHandler<R>) new SimplePhotonRequestHandler(elasticsearchSearcher);
-        }
-
-    }
+  }
 }
